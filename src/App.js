@@ -1,25 +1,43 @@
-import logo from './logo.svg';
 import './App.css';
+import Head from './components/Head';
+import Test from './components/Test';
+import axios from 'axios';
+import { useEffect, useState } from 'react';
 
 function App() {
+  const [member, setMember] = useState([]);
+
+useEffect(()=>{
+
+  const getData = async () => { 
+    try{
+    const data = await axios({
+        url:'http://localhost:3000/mem',
+        method:'get',
+    });
+  console.log(data.data)  
+  setMember(data.data)
+} catch(e){console.log(e)}
+};
+getData()
+}
+,[])
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+   <div>
+    <Head 
+   member={member}
+    />
+    <div>
+      <ul>
+      <li>{member.id}</li>
+      <li>{member.이름}</li>
+      <li>{member.나이}</li>
+      </ul>
     </div>
-  );
+    <Test />
+   </div>
+  )
 }
 
 export default App;
